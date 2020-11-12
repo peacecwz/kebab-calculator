@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using MLSA.Serverless.Services;
 using System.Collections.Generic;
 
-namespace MLSA.Serverless
+namespace MLSA.Serverless.Functions
 {
     public class CalculateKebap
     {
