@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,17 +6,47 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using MLSA.Serverless.Services;
+using System.Collections.Generic;
 
 namespace MLSA.Serverless
 {
-    public static class CalculateKebap
+    public class CalculateKebap
     {
-        [FunctionName("CalculateKebap")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        private readonly IKebapCalculatorService _kebapCalculatorService;
+        private readonly ILogger<CalculateKebap> _logger;
+        public CalculateKebap(IKebapCalculatorService kebapCalculatorService, ILogger<CalculateKebap> logger)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            _kebapCalculatorService = kebapCalculatorService;
+            _logger = logger;
+        }
+
+        [FunctionName("GetKebaps")]
+        public IActionResult GetKebaps([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "kebaps")] HttpRequest req)
+        {
+            List<string> actions = new List<string>()
+            {
+                "Adana Kebap",
+                "Urfa Kebap"
+            };
+            return new OkObjectResult(actions);
+        }
+
+        [FunctionName("GetKebapsActions")]
+        public IActionResult GetActions([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "kebaps/actions")] HttpRequest req)
+        {
+            List<string> actions = new List<string>()
+            {
+                "/kebaps/actions/calculate"
+            };
+            return new OkObjectResult(actions);
+        }
+
+        [FunctionName("CalculateKebap")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "kebaps/actions/calculate")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             string name = req.Query["name"];
 
