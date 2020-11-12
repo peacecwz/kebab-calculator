@@ -24,12 +24,7 @@ namespace MLSA.Serverless
         [FunctionName("GetKebaps")]
         public IActionResult GetKebaps([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "kebaps")] HttpRequest req)
         {
-            List<string> actions = new List<string>()
-            {
-                "Adana Kebap",
-                "Urfa Kebap"
-            };
-            return new OkObjectResult(actions);
+            return new OkObjectResult(_kebapCalculatorService.GetKebaps());
         }
 
         [FunctionName("GetKebapsActions")]
