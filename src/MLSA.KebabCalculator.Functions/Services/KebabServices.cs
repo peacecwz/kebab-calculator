@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MLSA.KebabCalculator.Functions.HealthRules;
@@ -6,24 +7,67 @@ using MLSA.KebabCalculator.Functions.Models;
 
 namespace MLSA.KebabCalculator.Functions.Services
 {
+    public class KebabCalculationResult
+    {
+        public int PeopleCount { get; set; }
+        public double MeterSize { get; set; }
+        public List<KebabMaterial> KebabMaterials { get; set; }
+    }
+
     public class KebabServices : IKebabServices
     {
         private readonly List<KebabMaterial> _kebabMaterials;
+        private static readonly double DefaultKebapCentiMeterSize = 300;
+        private static readonly int DefaultPeopleCount = 12;
 
-        public KebabServices()
+        private readonly IHealthRulesChain _healthRulesChain;
+
+        public KebabServices(IHealthRulesChain healthRulesChain)
         {
+            _healthRulesChain = healthRulesChain;
             _kebabMaterials = GetKebabMaterials();
         }
 
-        public List<KebabMaterial> GetFoodMaterials(int peopleCount)
+        public KebabCalculationResult GetFoodMaterialsByMeters(double meters)
         {
-            return _kebabMaterials.Select(material => new KebabMaterial()
+            var kebabMaterials = _kebabMaterials.Select(material => new KebabMaterial
             {
                 AmountType = material.AmountType,
                 Name = material.Name,
-                Amount = material.Amount * peopleCount,
+                Amount = (int) Math.Round((material.Amount / DefaultKebapCentiMeterSize) * (meters * 100), 2),
                 Notice = ""
             }).ToList();
+
+            _healthRulesChain.Execute(kebabMaterials);
+
+            var peopleCount = (DefaultPeopleCount * meters * 100) / DefaultKebapCentiMeterSize;
+            return new KebabCalculationResult
+            {
+                MeterSize = meters,
+                PeopleCount = (int) Math.Round(peopleCount),
+                KebabMaterials = kebabMaterials
+            };
+        }
+
+        public KebabCalculationResult GetFoodMaterialsByPeopleCount(int peopleCount)
+        {
+            var kebabMaterials = _kebabMaterials.Select(material => new KebabMaterial
+            {
+                AmountType = material.AmountType,
+                Name = material.Name,
+                Amount = Math.Round((material.Amount / DefaultPeopleCount) * peopleCount, 2),
+                Notice = ""
+            }).ToList();
+
+            double meters = ((peopleCount * DefaultKebapCentiMeterSize) / DefaultPeopleCount) / 100;
+            _healthRulesChain.Execute(kebabMaterials);
+
+            return new KebabCalculationResult()
+            {
+                PeopleCount = peopleCount,
+                KebabMaterials = kebabMaterials,
+                MeterSize = Math.Round(meters, 2)
+            };
         }
 
         private static List<KebabMaterial> GetKebabMaterials()
@@ -95,6 +139,7 @@ namespace MLSA.KebabCalculator.Functions.Services
 
     public interface IKebabServices
     {
-        List<KebabMaterial> GetFoodMaterials(int peopleCount);
+        KebabCalculationResult GetFoodMaterialsByPeopleCount(int peopleCount);
+        KebabCalculationResult GetFoodMaterialsByMeters(double meters);
     }
 }

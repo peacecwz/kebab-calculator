@@ -28,10 +28,15 @@ namespace MLSA.KebabCalculator.Functions.Functions
         )
         {
             var request = await JsonSerializer.DeserializeAsync<CalculateKebabRequest>(httpRequest.Body);
-         
-            var materials = _kebabServices.GetFoodMaterials(request.PeopleCount);
 
-            return new OkObjectResult(materials);
+            KebabCalculationResult result = null;
+
+            result = request.PeopleCount > default(int)
+                ? _kebabServices.GetFoodMaterialsByPeopleCount(request.PeopleCount)
+                : _kebabServices.GetFoodMaterialsByMeters(request.KebabMeters);
+
+
+            return new OkObjectResult(result);
         }
     }
 }
