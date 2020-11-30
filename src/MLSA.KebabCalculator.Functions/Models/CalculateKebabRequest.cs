@@ -6,7 +6,7 @@ namespace MLSA.KebabCalculator.Functions.Models
     public class CalculateKebabRequest
     {
         [JsonPropertyName("peopleCount")] public int PeopleCount { get; set; }
-        [JsonPropertyName("kebabMeters")] public int KebabMeters { get; set; }
+        [JsonPropertyName("kebabMeters")] public double KebabMeters { get; set; }
         [JsonPropertyName("materials")] public List<KebabMaterial> Materials { get; set; }
     }
 

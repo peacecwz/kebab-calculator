@@ -14,6 +14,10 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLSA.KebabCalculator.Tests", "tests\MLSA.KebabCalculator.Tests\MLSA.KebabCalculator.Tests.csproj", "{D4BE2643-1165-4324-B39E-BB07688A08BB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{109CD78D-1E5A-441C-9F0F-6BD2C70EA3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLSA.KebabCalculator.Web", "ui\MLSA.KebabCalculator.Web\MLSA.KebabCalculator.Web.csproj", "{DFD13548-6A4B-494B-BB7E-1EE068693915}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3E7F6690-C714-4E7F-AA24-1829CA90A10D} = {3372ADA4-CC76-4398-B340-BDDB2AE81908}
 		{D4BE2643-1165-4324-B39E-BB07688A08BB} = {B36E78BC-21C5-4488-8486-02AA70372624}
+		{DFD13548-6A4B-494B-BB7E-1EE068693915} = {109CD78D-1E5A-441C-9F0F-6BD2C70EA3BB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3E7F6690-C714-4E7F-AA24-1829CA90A10D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,5 +37,9 @@ Global
 		{D4BE2643-1165-4324-B39E-BB07688A08BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4BE2643-1165-4324-B39E-BB07688A08BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4BE2643-1165-4324-B39E-BB07688A08BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFD13548-6A4B-494B-BB7E-1EE068693915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD13548-6A4B-494B-BB7E-1EE068693915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD13548-6A4B-494B-BB7E-1EE068693915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD13548-6A4B-494B-BB7E-1EE068693915}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

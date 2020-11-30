@@ -37,14 +37,19 @@ namespace MLSA.KebabCalculator.Functions.Services
                 Amount = (int) Math.Round((material.Amount / DefaultKebapCentiMeterSize) * (meters * 100), 2),
                 Notice = ""
             }).ToList();
+            var peopleCount = (int) Math.Round((DefaultPeopleCount * meters * 100) / DefaultKebapCentiMeterSize);
 
-            _healthRulesChain.Execute(kebabMaterials);
+            _healthRulesChain.Execute(new CalculateKebabRequest()
+            {
+                Materials = kebabMaterials,
+                KebabMeters = meters,
+                PeopleCount = peopleCount
+            });
 
-            var peopleCount = (DefaultPeopleCount * meters * 100) / DefaultKebapCentiMeterSize;
             return new KebabCalculationResult
             {
                 MeterSize = meters,
-                PeopleCount = (int) Math.Round(peopleCount),
+                PeopleCount = peopleCount,
                 KebabMaterials = kebabMaterials
             };
         }
@@ -59,14 +64,19 @@ namespace MLSA.KebabCalculator.Functions.Services
                 Notice = ""
             }).ToList();
 
-            double meters = ((peopleCount * DefaultKebapCentiMeterSize) / DefaultPeopleCount) / 100;
-            _healthRulesChain.Execute(kebabMaterials);
+            double meters = Math.Round(((peopleCount * DefaultKebapCentiMeterSize) / DefaultPeopleCount) / 100, 2);
+            _healthRulesChain.Execute(new CalculateKebabRequest()
+            {
+                Materials = kebabMaterials,
+                KebabMeters = meters,
+                PeopleCount = peopleCount
+            });
 
             return new KebabCalculationResult()
             {
                 PeopleCount = peopleCount,
                 KebabMaterials = kebabMaterials,
-                MeterSize = Math.Round(meters, 2)
+                MeterSize = meters
             };
         }
 

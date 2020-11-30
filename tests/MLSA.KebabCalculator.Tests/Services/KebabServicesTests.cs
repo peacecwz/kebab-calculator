@@ -1,5 +1,7 @@
 using FluentAssertions;
+using MLSA.KebabCalculator.Functions.HealthRules;
 using MLSA.KebabCalculator.Functions.Services;
+using Moq;
 using Xunit;
 
 namespace MLSA.KebabCalculator.Tests.Services
@@ -10,7 +12,8 @@ namespace MLSA.KebabCalculator.Tests.Services
 
         public KebabServicesTests()
         {
-            _kebabCalculatorService = new KebabServices();
+            var healthRulesChainMock = new Mock<IHealthRulesChain>();
+            _kebabCalculatorService = new KebabServices(healthRulesChainMock.Object);
         }
 
         [Theory]
